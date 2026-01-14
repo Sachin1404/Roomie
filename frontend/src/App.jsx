@@ -7,6 +7,7 @@ import Rooms from "./pages/Rooms";
 import SearchRoommate from "./pages/SearchRoommate";
 import Profile from "./pages/Profile";
 import ProtectedRoute from "./components/protectedRoute";
+import SearchRoomAndRoommate from "./pages/SearchRoomAndRoommate";
 
 function App() {
   return (
@@ -20,6 +21,8 @@ function App() {
         {/* Search is public */}
         <Route path="/rooms" element={<Rooms />} />
         <Route path="/search-roommate" element={<SearchRoommate />} />
+        <Route path="/search-room-and-roommate" element={<SearchRoomAndRoommate />} />
+
 
         {/* Protected */}
         <Route 

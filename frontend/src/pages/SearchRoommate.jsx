@@ -1,6 +1,117 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+const indianCities = [
+  "Delhi",
+  "Mumbai",
+  "Bangalore",
+  "Hyderabad",
+  "Chennai",
+  "Kolkata",
+  "Pune",
+  "Ahmedabad",
+  "Jaipur",
+  "Chandigarh",
+  "Noida",
+  "Gurgaon",
+  "Faridabad",
+  "Ghaziabad",
+  "Lucknow",
+  "Kanpur",
+  "Indore",
+  "Bhopal",
+  "Patna",
+  "Ranchi",
+  "Bhubaneswar",
+  "Cuttack",
+  "Raipur",
+  "Nagpur",
+  "Nashik",
+  "Aurangabad",
+  "Thane",
+  "Panvel",
+  "Navi Mumbai",
+  "Surat",
+  "Vadodara",
+  "Rajkot",
+  "Udaipur",
+  "Jodhpur",
+  "Kota",
+  "Ajmer",
+  "Amritsar",
+  "Ludhiana",
+  "Jalandhar",
+  "Patiala",
+  "Dehradun",
+  "Haridwar",
+  "Roorkee",
+  "Shimla",
+  "Solan",
+  "Manali",
+  "Kullu",
+  "Srinagar",
+  "Jammu",
+  "Anantnag",
+  "Leh",
+  "Kargil",
+  "Guwahati",
+  "Silchar",
+  "Dibrugarh",
+  "Jorhat",
+  "Tezpur",
+  "Shillong",
+  "Imphal",
+  "Aizawl",
+  "Kohima",
+  "Agartala",
+  "Gangtok",
+  "Itanagar",
+  "Dimapur",
+  "Mokokchung",
+  "Ziro",
+  "Pasighat",
+  "Vijayawada",
+  "Guntur",
+  "Visakhapatnam",
+  "Rajahmundry",
+  "Kakinada",
+  "Tirupati",
+  "Warangal",
+  "Karimnagar",
+  "Nizamabad",
+  "Coimbatore",
+  "Madurai",
+  "Trichy",
+  "Salem",
+  "Erode",
+  "Tirunelveli",
+  "Vellore",
+  "Hosur",
+  "Tiruppur",
+  "Kochi",
+  "Ernakulam",
+  "Thrissur",
+  "Trivandrum",
+  "Kozhikode",
+  "Kottayam",
+  "Alappuzha",
+  "Palakkad",
+  "Malappuram",
+  "Kannur",
+  "Kasaragod",
+  "Udupi",
+  "Mangalore",
+  "Hubli",
+  "Dharwad",
+  "Belgaum",
+  "Davangere",
+  "Mysore",
+  "Shimoga",
+  "Tumkur",
+  "Ballari",
+];
+
+
 
 const dummyResults = [
   {
@@ -62,6 +173,8 @@ const SearchRoommate = () => {
   const [preference, setPreference] = useState("");
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [suggestions, setSuggestions] = useState([]);
+
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -108,13 +221,53 @@ const SearchRoommate = () => {
         onSubmit={handleSearch}
         className="bg-white p-5 rounded shadow grid grid-cols-1 md:grid-cols-4 gap-4 mb-8"
       >
-        <input
-          type="text"
-          placeholder="Enter City"
-          className="border p-2 rounded"
-          value={city}
-          onChange={(e) => setCity(e.target.value)}
-        />
+        <div className="relative">
+  <input
+    type="text"
+    placeholder="Enter City"
+    className="border p-2 rounded w-full"
+    value={city}
+    onChange={(e) => {
+      const value = e.target.value;
+      setCity(value);
+
+      if (value.length > 0) {
+        const matches = indianCities
+          .filter((c) =>
+            c.toLowerCase().startsWith(value.toLowerCase())
+          )
+          .slice(0, 6); // limit suggestions
+
+        setSuggestions(matches);
+      } else {
+        setSuggestions([]);
+      }
+    }}
+    onBlur={() => {
+      // Delay so click works
+      setTimeout(() => setSuggestions([]), 150);
+    }}
+  />
+
+  {/* Suggestions dropdown */}
+  {suggestions.length > 0 && (
+    <ul className="absolute z-10 bg-white border rounded w-full mt-1 shadow">
+      {suggestions.map((c) => (
+        <li
+          key={c}
+          onClick={() => {
+            setCity(c);
+            setSuggestions([]);
+          }}
+          className="px-3 py-2 cursor-pointer hover:bg-indigo-100"
+        >
+          {c}
+        </li>
+      ))}
+    </ul>
+  )}
+</div>
+
 
         <input
           type="number"
