@@ -1,4 +1,6 @@
 import Profile from "../models/Profile.js";
+import User from "../models/User.js";
+
 
 /**
  * CREATE PROFILE
@@ -82,6 +84,10 @@ export const createProfile = async (req, res) => {
     });
 
     await profile.save();
+
+    await User.findByIdAndUpdate(userId, {
+        profileCompleted: true
+    });
 
     return res.status(201).json({
       msg: "Profile created successfully",
